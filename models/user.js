@@ -42,4 +42,10 @@ const UserSchema = Schema({
     },
 });
 
+// Remover los campos __v y password modificando el metodo toJSON, solo mandamos los restantes a user
+UserSchema.methods.toJSON = function() {
+    const { __v, password, ...user } = this.toObject();
+    return user;
+}
+
 module.exports = model( 'User', UserSchema );
