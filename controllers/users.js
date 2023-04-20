@@ -7,12 +7,23 @@ const { exists } = require('../models/user');
 const usersGet = async( req, res = response ) => {
     // const { q, name = 'No name', apikey, page, limit } = req.query;
     const { limit = 5, from = 0 } = req.query;
-    const user = await User.find()
-        .skip( Number(from) )
-        .limit( Number(limit) );
+    const query = { state: true };
+ 
+    
+    const [ total, users ] = await Promise.all([
+        User.count(query),
+        User.find(query)
+            .skip( Number( from ))
+            .limit( Number( limit ))
+    ]);
+
+
 
     res.json({
-        user,
+        total,
+        users
+        // total,
+        // user,
     });
 }
 
