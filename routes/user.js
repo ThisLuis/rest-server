@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { itsValidRole, emailExists } = require('../helpers/db-validators');
+const { itsValidRole, emailExists, userExistsById } = require('../helpers/db-validators');
 
 const { usersGet, 
         usersPut, 
@@ -13,7 +13,12 @@ const router = Router();
 
 router.get('/', usersGet);
 
-router.put('/:id', usersPut);
+router.put('/:id', [
+        check('id', 'No es un ID valido').isMongoId(),
+        check('id').custom( userExistsById ),
+        check('role').custom( itsValidRole ),
+        validateFields
+],usersPut);
 
 router.post('/', [
         // check('role', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
