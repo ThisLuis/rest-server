@@ -33,18 +33,31 @@ const usersPost = async ( req, res = response ) => {
     });
 }
 
-const usersPut = ( req, res = response ) => {
-    const id = req.params.id;
+const usersPut = async( req, res = response ) => {
+
+    const { id } = req.params;
+    const { password, google, email, ...resto } = req.body;
+
+    // TODO: Validar contra base de datos
+    if( password ) {
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync( password, salt );
+    }
+
+    const user = await User.findByIdAndUpdate( id, resto );
+
     res.json({
         msg: ' put API - Controller',
-        id
+        user
     })
 }
+
 const usersPatch = ( req, res = response ) => {
     res.json({
         msg: ' patch API - Controller'
     })
 }
+
 const usersDelete = ( req, res = response ) => {
     res.json({
         msg: ' delete API - Controller'
