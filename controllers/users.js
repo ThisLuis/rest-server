@@ -4,15 +4,15 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 const { exists } = require('../models/user');
 
-const usersGet = ( req, res = response ) => {
-    const { q, name = 'No name', apikey, page, limit } = req.query;
+const usersGet = async( req, res = response ) => {
+    // const { q, name = 'No name', apikey, page, limit } = req.query;
+    const { limit = 5, from = 0 } = req.query;
+    const user = await User.find()
+        .skip( Number(from) )
+        .limit( Number(limit) );
+
     res.json({
-        msg: 'get API - Controller',
-        q,
-        name,
-        apikey,
-        page,
-        limit
+        user,
     });
 }
 
@@ -46,10 +46,7 @@ const usersPut = async( req, res = response ) => {
 
     const user = await User.findByIdAndUpdate( id, resto );
 
-    res.json({
-        msg: ' put API - Controller',
-        user
-    })
+    res.json( user );
 }
 
 const usersPatch = ( req, res = response ) => {
