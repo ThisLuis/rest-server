@@ -38,7 +38,7 @@ router.delete('/:id', [
         check('id').custom( userExistsById),
         validateFields
 
-],usersDelete);
+],usersDelete); 
 
 router.patch('/', usersPatch);
 
