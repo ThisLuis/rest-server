@@ -70,6 +70,8 @@ const usersDelete = async( req, res = response ) => {
 
     const { id } = req.params;
 
+    // const uid = req.uid;
+
     // Borrar de DB
     // const user = await User.findByIdAndDelete( id );
 
