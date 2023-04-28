@@ -41,7 +41,7 @@ const validateJWT = async(req = request, res = response, next) => {
         });
     }
 
-    next();
+    // next();
 }
 
 module.exports = {

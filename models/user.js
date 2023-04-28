@@ -40,6 +40,7 @@ const UserSchema = Schema({
         type: Boolean,
         default: false,
     },
+    
 });
 
 // Remover los campos __v y password modificando el metodo toJSON, solo mandamos los restantes a user

@@ -1,33 +1,38 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validateFields } = require('../middlewares/validate-fields');
+const { validateJWT, validateFields }= require('../middlewares');
+const { createCategorie, getCategories, getCategorieById, updateCategorie, deleteCategorie } = require('../controllers/categories');
+
+const { existsCategorieById } = require('../helpers/db-validators');
 
 const router = Router();
 
 // Obtener todas las categorias - publico
-router.get('/', (req, res) => {
-    res.json('Obtener categorias');
-});
+router.get('/', getCategories);
 
 // Obtener una categoria por id - publico
-router.get('/:id', (req, res) => {
-    res.json('get - id');
-});
+router.get('/:id', [
+    check('id', 'No es un id de Moongo valido').isMongoId(),
+    check('id').custom(existsCategorieById),
+    validateFields,
+],getCategorieById);
 
 // Crear categoria - privado - cualquier persona con un token valido
-router.post('/', (req, res) => {
-    res.json('post');
-});
+router.post('/', [
+    validateJWT,
+    check('name', 'Es necesario un nombre para crear una categoria').not().isEmpty(),
+    validateFields
+], createCategorie);
 
 // Actualizar una categoria por id - privado - cualquiera con token valido
-router.put('/:id', (req, res) => {
-    res.json('put');
-});
+router.put('/:id', [
+    validateFields,
+],updateCategorie);
 
 // Borrar una categoria - Admin
-router.delete('/:id', (req, res) => {
-    res.json('delete');
-})
+router.delete('/:id', [
+    validateFields,
+],deleteCategorie);
 
 module.exports = router;
