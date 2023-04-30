@@ -21,9 +21,9 @@ class Server {
         // Connect Database
         this.connectDB();
 
-
         // ? Middlewares
         this.middlewares();
+
         // ? Rutas de la app
         this.routes();
     }
