@@ -3,9 +3,9 @@ const { response } = require('express');
 const { Product } = require('../models');
 
 const createProduct = async( req, res = response ) => {
-    const name = req.body.name.toUpperCase();
-    const { status, price, description, available } = req.body;
-    const productDB = await Product.findOne({ name })
+    const { status, user, ...restData } = req.body;
+
+    const productDB = await Product.findOne({ name: restData.name })
 
     if( productDB ) {
         return res.status(400).json({
@@ -15,13 +15,9 @@ const createProduct = async( req, res = response ) => {
 
     // Generar data
     const data = {
-        name,
-        status,
-        price,
-        description,
-        available,
+        ...restData,
+        name: restData.name.toUpperCase(),
         user: req.user._id, // Es el usuario que ya esta validado
-        categorie: req.body.categorie
     }
 
     const product = new Product( data );
@@ -60,8 +56,11 @@ const getProductById = async( req, res = response ) => {
 const updateProduct = async( req, res = response ) => {
     const { id } = req.params;
     const { status, user, ...data } = req.body;
-    data.name = data.name.toUpperCase();
-    data.description = data.description;
+
+    if( data.name ) {
+        data.name = data.name.toUpperCase();
+    }
+
     data.user = req.user._id;
 
     const product = await Product.findByIdAndUpdate( id, data, { new: true } );
