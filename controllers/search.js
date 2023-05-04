@@ -15,10 +15,20 @@ const searchUsers = async( query = '', res = response ) => {
 
     if ( isMongoId ) {
         const user = await User.findById( query );
-        res.json({
+        return res.json({
             results: ( user ) ? [ user ] : []
         });
     }
+
+    const regex = new RegExp( query, 'i' );
+    const users = await User.find({
+        $or: [{ name: regex }, { email: regex }],
+        $and: [{ state: true }]
+    });
+
+    res.json({
+        results: users
+    });
 }
 
 const search = ( req, res = response ) => {
