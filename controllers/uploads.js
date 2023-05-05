@@ -89,7 +89,7 @@ const showImage = async( req, res = response ) => {
                 return res.status( 400 ).json({
                     msg: `No existe un producto con el id ${ id }`
                 });
-            }
+            } 
         break;
             
         case 'users':
@@ -113,8 +113,14 @@ const showImage = async( req, res = response ) => {
             return res.sendFile( pathImage );
         }
     }
+    
+    const pathImage = path.join( __dirname, '../assets/no-image.jpg');
+    res.sendFile( pathImage);
+    
+    
 
-    res.json( { msg: 'Falta el placeholder'} );
+    
+    // res.json( { msg: 'Falta el placeholder'} );
 }
 
 module.exports = {
