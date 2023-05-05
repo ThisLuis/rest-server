@@ -75,7 +75,50 @@ const updateImage = async( req, res = response ) => {
     res.json( model );
 }
 
+
+const showImage = async( req, res = response ) => {
+
+    const { id, collection } = req.params;
+
+    let model;
+
+    switch( collection ) {
+        case 'products':
+            model = await Product.findById( id );
+            if( !model ) {
+                return res.status( 400 ).json({
+                    msg: `No existe un producto con el id ${ id }`
+                });
+            }
+        break;
+            
+        case 'users':
+            model = await User.findById( id );
+            if ( !model ) {
+                return res.status(400).json({
+                    msg: `No existe un usuario con el id ${ id }`
+                })
+            }
+        break;
+
+        default:
+            res.status(500).json({ msg: 'No esta validado...aun'})
+    }
+
+    // Limpiar la imagen previa
+    if( model.img ) {
+        // Borramos la imagen del servidor
+        const pathImage = path.join( __dirname, '../uploads', collection, model.img);
+        if( fs.existsSync( pathImage )) {
+            return res.sendFile( pathImage );
+        }
+    }
+
+    res.json( { msg: 'Falta el placeholder'} );
+}
+
 module.exports = {
     uploadFiles,
     updateImage,
+    showImage
 }
