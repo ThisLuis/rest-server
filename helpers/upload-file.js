@@ -13,7 +13,7 @@ const uploadFile = ( files, VALID_EXTENSIONS = [ 'png', 'jpg', 'jpeg', 'gif' ], 
         if( !VALID_EXTENSIONS.includes( extension )) {
             return reject(`La extension: ${ extension } no esta permitida, ${ VALID_EXTENSIONS }`);
         }
-        
+
         const temporaryName = uuidv4() + '.' + extension;
         // file.name es el nombre que tiene el archivo cuando lo subimos
         const uploadPath = path.join( __dirname, '../uploads/', folder, temporaryName);
