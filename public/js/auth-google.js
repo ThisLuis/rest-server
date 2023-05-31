@@ -15,12 +15,10 @@ form.addEventListener('submit', e => {
         headers: { 'Content-Type': 'application/json' }
     })
     .then( resp => resp.json())
-    .then( ( msg, token) => {
-        if( msg ) {
-            return console.error( msg );
-        }
+    .then( ({ token })  => {
+       
 
-        localStorage.setItem('token', token)
+        localStorage.setItem('token', token);
     })
     .catch( err => {
         console.log(err)
