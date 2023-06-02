@@ -53,13 +53,27 @@ const connectSocket = async() => {
         // TODO:
     });
 
-    socket.on('users-online', () => {
-        // TODO:
-    });
+    socket.on('users-online', printUsers );
 
     socket.on('message-private', () => {
         // TODO:
     });
+}
+
+const printUsers = ( users = []) => {
+    let usersHtml = '';
+    users.forEach( user => {
+        usersHtml += `
+            <li>
+                <p>
+                    <h5 class="text-success">${ user.name }</h5>
+                    <span class="fs-6 text-muted">${ user.uid }</span>
+                </p>
+            </li>
+        `;
+    });
+
+    ulUsers.innerHTML = usersHtml;
 }
 
 const main = async() => {
