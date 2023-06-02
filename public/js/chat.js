@@ -1,7 +1,16 @@
+// Referencias al html
+const txtUid = document.querySelector('#txtUid');
+const txtMessage = document.querySelector('#txtMessage');
+const ulUsers = document.querySelector('#ulUsers');
+const ulMessages = document.querySelector('#ulMessages');
+const btnLogout = document.querySelector('#btnLogout');
+
 const url = 'http://localhost:8080/api/auth/';
 
 let user = null;
 let socket = null;
+
+
 
 const validateJWT = async() => {
     const token = localStorage.getItem('token'); 
@@ -29,6 +38,27 @@ const connectSocket = async() => {
         'extraHeaders': {
             'x-token': localStorage.getItem('token')
         }
+    });
+
+    // Creamos los eventos cuando el socket se dispare
+    socket.on('connect', () => {
+        console.log('Socket online');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Socket offline');
+    });
+
+    socket.on('receive-messages', () => {
+        // TODO:
+    });
+
+    socket.on('users-online', () => {
+        // TODO:
+    });
+
+    socket.on('message-private', () => {
+        // TODO:
     });
 }
 
